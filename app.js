@@ -59,9 +59,33 @@ app.route("/articles")
     } catch (err) {
       res.status(500).json({ error: "Modification failed -->: " + err })
     }
-  });
- 
+  })
+
+  .patch(async (req, res) => {
+    Article.findOneAndUpdate(
+        { title: req.params.articleTitle },
+        { $set: req.body })
+        .then(res.send("Successfully updated article."))
+        .catch(err => {
+            res.send(err)
+        })
+})
+
+.delete(function(req,res){
+  removeOne();
+  async function removeOne() {
+      try{
+          await Article.deleteOne(
+              {title:req.body.title},
+          ).then(
+              res.send("Successfully deleted Article!")
+          )
+      }catch(err) {
+          console.log(err);
+      }
+  };
+});
 
 app.listen(3000, function(){
-    console.log("Server started on port 3000");
+    console.log("Server started on port 3000.");
 });
